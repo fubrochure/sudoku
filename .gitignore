@@ -340,3 +340,4 @@ ASALocalRun/
 # Something I don't know
 *.vcxproj.filters
 *.vcxproj
+*.sln
