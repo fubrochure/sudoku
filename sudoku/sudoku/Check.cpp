@@ -23,6 +23,11 @@ CheckParameter::~CheckParameter()
 
 }
 
+int CheckParameter::getCreateNumber()
+{
+	return create_num;
+}
+
 int CheckParameter::check()
 {
 	int i;

@@ -341,3 +341,4 @@ ASALocalRun/
 *.vcxproj.filters
 *.vcxproj
 *.sln
+sudoku.txt

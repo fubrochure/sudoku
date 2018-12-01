@@ -6,6 +6,7 @@ public:
 	CheckParameter();
 	CheckParameter(int argc, char** argv);
 	~CheckParameter();
+	int getCreateNumber();
 	int check();
 private:
 	const int createOrder = 1;
