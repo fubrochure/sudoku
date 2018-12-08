@@ -10,7 +10,6 @@ CreateSudoku::CreateSudoku()
 	nowNumber = 0;
 	//file.open(".//sudoku.txt", std::ios::out | std::ios::trunc);
 	target = 0;
-	output = new char[163000001];
 }
 
 
@@ -21,6 +20,7 @@ CreateSudoku::~CreateSudoku()
 
 bool CreateSudoku::stratCreate(int goalNumber)
 {
+	output = new char[163000001];
 	this->goalNumber = goalNumber;
 	createSeed(1);
 	stringToFile();
@@ -136,9 +136,7 @@ void CreateSudoku::outputResult()
 				output[target++] = result[i][j]+'0';
 			}
 		}
-		if (nowNumber != goalNumber - 1 || i != 8) {
-			output[target++] = '\n';
-		}
+		output[target++] = '\n';	
 	}
 	nowNumber++;
 	return;
@@ -147,8 +145,9 @@ void CreateSudoku::outputResult()
 void CreateSudoku::stringToFile()
 {
 	output[target++] = '\0';
+	std::cout << strlen(output);
 	std::ofstream file;
-	file.open(".//sudoku.txt", std::ios::out | std::ios::trunc);
+	file.open("sudoku.txt", std::ios::out | std::ios::trunc);
 	file << output;
 	file.close();
 	//std::cout << output;

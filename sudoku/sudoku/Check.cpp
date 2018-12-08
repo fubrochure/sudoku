@@ -47,13 +47,28 @@ int CheckParameter::check()
 		return this->createOrder;
 	}
 	else if (order == "-s") {
-		adress = argv[2];
-		return this->solveOrder;
+		std::ifstream file;
+		file.open(argv[2], std::ios::in);
+		if (!file.is_open()) {
+			std::cout << "can't open file" << argv[2]<<"\n";
+			return wrongOrder;
+		}
+		else
+		{
+			adress = argv[2];
+			//std::cout << adress;
+			return this->solveOrder;
+		}
 	}
 	else {
 		std::cout << "the first parameter is wrong\n";
 		return this->wrongOrder;
 	}
+}
+
+std::string CheckParameter::getpath()
+{
+	return adress;
 }
 
 int CheckParameter::stringToInt(char * target)

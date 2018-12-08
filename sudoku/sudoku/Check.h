@@ -8,6 +8,7 @@ public:
 	~CheckParameter();
 	int getCreateNumber();
 	int check();
+	std::string getpath();
 private:
 	const int createOrder = 1;
 	const int solveOrder = 2;
