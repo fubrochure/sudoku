@@ -49,12 +49,28 @@ SolveSudoku::SolveSudoku()
 	index = 0;
 	goalNumber = 0;
 	nowNumber = 0;
+	left = new int[nodeNum];
+	right = new int[nodeNum];
+	up = new int[nodeNum];
+	down = new int[nodeNum];
+	colValue = new int[nodeNum];
+	rowValue = new int[nodeNum];
+	fillValue = new int[nodeNum];
+	targetCol = new int[nodeNum];
 }
 
 SolveSudoku::~SolveSudoku()
 {
 	delete[] cache;
 	delete[] data;
+	delete[] left;
+	delete[] right;
+	delete[] up;
+	delete[] down;
+	delete[] colValue;
+	delete[] rowValue;
+	delete[] fillValue;
+	delete[] targetCol;
 }
 
 void SolveSudoku::startSolve(std::string adress)
@@ -98,25 +114,24 @@ void SolveSudoku::dealFile()
 
 void SolveSudoku::solveUnit()
 {
-	int i, j;
 	bool back;
 	//initial();
 	initialA();
 	//back = dealing();
 	back = dealingA();
 	//clear();
-	for (i = 0; i < 9; i++) {
+	/*for (i = 0; i < 9; i++) {
 		for (j = 0; j < 9; j++) {
 			std::cout << " " << map[i][j];
 		}
 		std::cout << "\n";
-	}
+	}*/
 	return;
 }
 
 void SolveSudoku::initialA()
 {
-	int i, j, k;
+	int i, j;
 	for (i = 0; i < 9; i++) {              //判定标准初始化
 		for (j = 0; j < 9; j++) {
 			col[i][j] = true;
@@ -127,12 +142,14 @@ void SolveSudoku::initialA()
 	for (i = 0; i < 9; i++) {               //数独map初始化，对空格取值加入限制
 		for (j = 0; j < 9; j++) {
 			map[i][j] = data[index++];
+			//std::cout << ' ' << map[i][j];
 			if (map[i][j] > 0) {
 				row[i][map[i][j] - 1] = false;
 				col[j][map[i][j] - 1] = false;
 				block[getblock(i + 1, j + 1) - 1][map[i][j] - 1] = false;
 			}
 		}
+		//std::cout << '\n';
 	}
 	useNum = 0;           //头指针
 	left[0] = 0;
@@ -202,12 +219,14 @@ void SolveSudoku::createNodeA(int row, int col, int value)
 
 bool SolveSudoku::dealingA()
 {
+	//std::cout << ++pile << '\n';
+	int i;
 	bool state = false;
 	if (right[0] == 0) {
+		pile--;
 		return true;
 	}
-	int i, j, k;
-	i = right[0];
+   	i = right[0];
 	for (i = down[right[0]]; i != right[0]; i = down[i]) {
 		remove(i);
 		map[rowValue[i] - 1][colValue[i] - 1] = fillValue[i];
@@ -216,6 +235,7 @@ bool SolveSudoku::dealingA()
 		if (state) break;
 		recover(i);
 	}
+	pile--;
 	return state;
 }
 
@@ -246,7 +266,7 @@ void SolveSudoku::remove(int p)
 
 void SolveSudoku::recover(int p)
 {
-	int row, col, temp, i, j;
+	int row, col, temp;
 	col = p;
 	do {
 		left[right[targetCol[col]]] = targetCol[col];
