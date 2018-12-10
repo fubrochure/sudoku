@@ -15,6 +15,8 @@ CheckParameter::CheckParameter(int argc, char** argv)
 {
 	this->argc = argc;
 	this->argv = argv;
+	create_num = 0;
+	adress = "";
 }
 
 

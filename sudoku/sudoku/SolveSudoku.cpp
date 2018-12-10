@@ -49,6 +49,7 @@ SolveSudoku::SolveSudoku()
 	index = 0;
 	goalNumber = 0;
 	nowNumber = 0;
+	result = 0;
 	left = new int[nodeNum];
 	right = new int[nodeNum];
 	up = new int[nodeNum];
@@ -80,10 +81,12 @@ void SolveSudoku::startSolve(std::string adress)
 	dealFile();
 	index = 0;
 	result = 0;
-	for (i = 0; i < goalNumber; i++) {
+	for (nowNumber = 0; nowNumber < goalNumber; nowNumber++) {
 		solveUnit();
+		toCache();
 	}
-
+	cache[result++] = '\0';
+	rewrite();
 }
 
 void SolveSudoku::dealFile()
@@ -114,18 +117,13 @@ void SolveSudoku::dealFile()
 
 void SolveSudoku::solveUnit()
 {
+	//int i, j;
 	bool back;
 	//initial();
 	initialA();
 	//back = dealing();
 	back = dealingA();
 	//clear();
-	/*for (i = 0; i < 9; i++) {
-		for (j = 0; j < 9; j++) {
-			std::cout << " " << map[i][j];
-		}
-		std::cout << "\n";
-	}*/
 	return;
 }
 
@@ -286,6 +284,33 @@ void SolveSudoku::recover(int p)
 		}
 		col = right[col];
 	} while (col != p);
+	return;
+}
+
+void SolveSudoku::toCache()
+{
+	int i, j;
+	if (nowNumber != 0) {
+		cache[result++] = '\n';
+	}
+	for (i = 0; i < 9; i++) {
+		for (j = 0; j < 9; j++) {
+			if (j != 0) {
+				cache[result++] = ' ';
+			}
+			cache[result++] = map[i][j] + '0';
+		}
+		cache[result++] = '\n';
+	}
+	return;
+}
+
+void SolveSudoku::rewrite()
+{
+	std::ofstream file;
+	file.open(path, std::ios::trunc | std::ios::out);
+	file << cache;
+	file.close();
 	return;
 }
 

@@ -11,8 +11,8 @@ private:
 	int goalNumber;
 	int nowNumber;
 	int seed[9] = { 4,1,2,3,5,6,7,8,9 };
-	int sudoku[9][9];
-	int result[9][9];
+	int sudoku[9][9] = {0};
+	int result[9][9] = {0};
 	int Index[18] = { 0,1,2,3,4,5,6,7,8,0,1,2,3,4,5,6,7,8 };
 	//std::string output;
 	//std::ofstream file;

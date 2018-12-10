@@ -27,11 +27,10 @@ private:
 	int nowNumber;
 	int index;
 	int result;
-	node* top;
-	int map[9][9];
-	bool col[9][9];
-	bool row[9][9];
-	bool block[9][9];
+	int map[9][9] = { 0 };
+	bool col[9][9] = {true};
+	bool row[9][9] = {true};
+	bool block[9][9] = {true};
 	const static int nodeNum = 9 * 9 * 4 + 9 * 9 * 9 * 4 + 1;
 	const static int colNum = 9 * 9 * 4;
 	int pile = 0;
@@ -57,7 +56,9 @@ private:
 	//void recover(node* p);
 	void recover(int p);
 	//void clear();
-	node * head;
+	void toCache();
+	void rewrite();
+	//node * head;
 };
 
 
