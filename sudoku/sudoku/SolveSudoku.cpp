@@ -58,6 +58,7 @@ SolveSudoku::SolveSudoku()
 	rowValue = new int[nodeNum];
 	fillValue = new int[nodeNum];
 	targetCol = new int[nodeNum];
+	number = new int[colNum + 1];
 }
 
 SolveSudoku::~SolveSudoku()
@@ -72,6 +73,7 @@ SolveSudoku::~SolveSudoku()
 	delete[] rowValue;
 	delete[] fillValue;
 	delete[] targetCol;
+	delete[] number;
 }
 
 void SolveSudoku::startSolve(std::string adress)
@@ -160,6 +162,7 @@ void SolveSudoku::initialA()
 		right[i] = i + 1;
 		down[i] = i;
 		up[i] = i;
+		number[i] = 0;
 	}
 	right[0] = 1;
 	left[0] = colNum;
@@ -209,6 +212,7 @@ void SolveSudoku::createNodeA(int row, int col, int value)
 		rowValue[temp] = row;
 		fillValue[temp] = value;
 		targetCol[temp] = j;
+		number[j]++;
 	}
 	useNum += 4;
 	//std::cout << row << ' ' << col << ' ' << value<<'\n';
@@ -218,14 +222,21 @@ void SolveSudoku::createNodeA(int row, int col, int value)
 bool SolveSudoku::dealingA()
 {
 	//std::cout << ++pile << '\n';
-	int i;
+	int i, minValue, minPos;
 	bool state = false;
 	if (right[0] == 0) {
-		pile--;
 		return true;
 	}
-   	i = right[0];
-	for (i = down[right[0]]; i != right[0]; i = down[i]) {
+	minValue = number[right[0]];
+	minPos = right[0];
+	for (i = right[0]; i != 0; i = right[i]) {
+		if (number[i] < minValue) {
+			minValue = number[i];
+			minPos = i;
+		}
+	}
+	//std::cout << "finish\n";
+	for (i = down[minPos]; i != minPos; i = down[i]) {
 		remove(i);
 		map[rowValue[i] - 1][colValue[i] - 1] = fillValue[i];
 		//std::cout << rowValue[i] << ' ' << colValue[i] << ' ' << fillValue[i] << '\n';
@@ -233,7 +244,6 @@ bool SolveSudoku::dealingA()
 		if (state) break;
 		recover(i);
 	}
-	pile--;
 	return state;
 }
 
@@ -252,6 +262,7 @@ void SolveSudoku::remove(int p)
 				while (temp != row) {
 					down[up[temp]] = down[temp];
 					up[down[temp]] = up[temp];
+					number[targetCol[temp]]--;
 					temp = right[temp];
 				}
 			}
@@ -277,6 +288,7 @@ void SolveSudoku::recover(int p)
 				while (temp != row) {
 					down[up[temp]] = temp;
 					up[down[temp]] = temp;
+					number[targetCol[temp]]++;
 					temp = right[temp];
 				}
 			}

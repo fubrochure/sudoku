@@ -42,6 +42,7 @@ private:
 	int *rowValue;
 	int *fillValue;
 	int *targetCol;
+	int *number;
 	int useNum;
 	void dealFile();
 	void solveUnit();
