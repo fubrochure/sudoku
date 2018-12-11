@@ -19,21 +19,11 @@ public:
 	~SolveSudoku();
 	void startSolve(std::string);
 private:
-	std::string path;
-	std::ifstream file;
 	char * cache;
 	int * data;
-	int goalNumber;
-	int nowNumber;
-	int index;
-	int result;
 	int map[9][9] = { 0 };
-	bool col[9][9] = {true};
-	bool row[9][9] = {true};
-	bool block[9][9] = {true};
 	const static int nodeNum = 9 * 9 * 4 + 9 * 9 * 9 * 4 + 1;
 	const static int colNum = 9 * 9 * 4;
-	int pile = 0;
 	int *left;
 	int *right;
 	int *up;
@@ -43,13 +33,12 @@ private:
 	int *fillValue;
 	int *targetCol;
 	int *number;
-	int useNum;
-	void dealFile();
-	void solveUnit();
+	int dealFile(std::string);
+	void solveUnit(int&);
 	//void initial();
-	void initialA();
+	void initialA(int&);
 	//void createNode(int row, int clo, int value);
-	void createNodeA(int row, int col, int value);
+	void createNodeA(int row, int col, int value, int&);
 	//bool dealing();
 	bool dealingA();
 	//void remove(node* p);
@@ -57,8 +46,8 @@ private:
 	//void recover(node* p);
 	void recover(int p);
 	//void clear();
-	void toCache();
-	void rewrite();
+	void toCache(int , int&);
+	void rewrite(std::string);
 	//node * head;
 };
 

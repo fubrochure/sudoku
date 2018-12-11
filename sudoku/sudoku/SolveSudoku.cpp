@@ -43,13 +43,8 @@ int getblock(int row, int col)
 
 SolveSudoku::SolveSudoku()
 {
-	path = "";
 	cache = NULL;
 	data = NULL;
-	index = 0;
-	goalNumber = 0;
-	nowNumber = 0;
-	result = 0;
 	left = new int[nodeNum];
 	right = new int[nodeNum];
 	up = new int[nodeNum];
@@ -79,22 +74,26 @@ SolveSudoku::~SolveSudoku()
 void SolveSudoku::startSolve(std::string adress)
 {
 	int i = 0;
-	this->path = adress;
-	dealFile();
+	int goalNumber, nowNumber, result,index;
+	std::string path;
+	path = adress;
+	goalNumber = dealFile(path);
 	index = 0;
 	result = 0;
 	for (nowNumber = 0; nowNumber < goalNumber; nowNumber++) {
-		solveUnit();
-		toCache();
+		solveUnit(index);
+		toCache(nowNumber, result);
 	}
 	cache[result++] = '\0';
-	rewrite();
+	rewrite(path);
 }
 
-void SolveSudoku::dealFile()
+int SolveSudoku::dealFile(std::string path)
 {
 	int i, j;
 	int len;
+	int number = 0;
+	std::ifstream file;
 	file.open(path,std::ios::in);
 	file.seekg(0, std::ios::end);
 	len = file.tellg();
@@ -103,35 +102,38 @@ void SolveSudoku::dealFile()
 	file.read(cache, len);
 	for (i = 0; i < len + 1; i++) {
 		if (cache[i] >= '0'&&cache[i] <= '9') {
-			goalNumber++;
+			number++;
 		}
 	}
-	data = new int[goalNumber];
+	data = new int[number];
 	for (i = 0, j = 0; i < len + 1; i++) {
 		if (cache[i] >= '0'&&cache[i] <= '9') {
 			data[j++] = cache[i] - '0';
 		}
 	}
-	goalNumber /= 81;
-	//std::cout << goalNumber<<'\n';
-	return;
+	number /= 81;
+	return number;
 }
 
-void SolveSudoku::solveUnit()
+void SolveSudoku::solveUnit(int& index)
 {
 	//int i, j;
 	bool back;
 	//initial();
-	initialA();
+	initialA(index);
 	//back = dealing();
 	back = dealingA();
 	//clear();
 	return;
 }
 
-void SolveSudoku::initialA()
+void SolveSudoku::initialA(int &index)
 {
 	int i, j;
+	int useNum=0;
+	bool col[9][9];
+	bool row[9][9];
+	bool block[9][9];
 	for (i = 0; i < 9; i++) {              //判定标准初始化
 		for (j = 0; j < 9; j++) {
 			col[i][j] = true;
@@ -171,12 +173,12 @@ void SolveSudoku::initialA()
 	for (i = 0; i < 9; i++) {
 		for (j = 0; j < 9; j++) {
 			if (map[i][j] != 0) {
-				createNodeA(i + 1, j + 1, map[i][j]);
+				createNodeA(i + 1, j + 1, map[i][j], useNum);
 			}
 			else{
 				for (int k = 1; k <= 9; k++) {
 					if (row[i][k-1] && col[j][k-1] && block[getblock(i + 1, j + 1) - 1][k-1]) {
-						createNodeA(i + 1, j + 1, k);
+						createNodeA(i + 1, j + 1, k, useNum);
 					}
 				}
 			}
@@ -184,7 +186,7 @@ void SolveSudoku::initialA()
 	}
 }
 
-void SolveSudoku::createNodeA(int row, int col, int value)
+void SolveSudoku::createNodeA(int row, int col, int value, int&useNum)
 {
 	int i, j, temp;
 	for (i = 0; i < 4; i++) {
@@ -299,7 +301,7 @@ void SolveSudoku::recover(int p)
 	return;
 }
 
-void SolveSudoku::toCache()
+void SolveSudoku::toCache(int nowNumber, int &result)
 {
 	int i, j;
 	if (nowNumber != 0) {
@@ -317,7 +319,7 @@ void SolveSudoku::toCache()
 	return;
 }
 
-void SolveSudoku::rewrite()
+void SolveSudoku::rewrite(std::string path)
 {
 	std::ofstream file;
 	file.open(path, std::ios::trunc | std::ios::out);
