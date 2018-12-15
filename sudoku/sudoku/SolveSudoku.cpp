@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "SolveSudoku.h"
 
+const int encode[9] = { 1,2,4,8,16,32,64,128,256 };
+
 int getblock(int row, int col)
 {
 	if (row <= 3) {
@@ -83,6 +85,7 @@ void SolveSudoku::startSolve(std::string adress)
 	for (nowNumber = 0; nowNumber < goalNumber; nowNumber++) {
 		solveUnit(index);
 		toCache(nowNumber, result);
+		std::cout << "finish one\n";
 	}
 	cache[result++] = '\0';
 	rewrite(path);
@@ -119,10 +122,15 @@ void SolveSudoku::solveUnit(int& index)
 {
 	//int i, j;
 	bool back;
+	bool critetion[243];
+	int criterion[27];
+	int rest;
 	//initial();
 	initialA(index);
+	//initialB(criterion, index);
 	//back = dealing();
 	back = dealingA();
+	//dealingB(criterion);
 	//clear();
 	return;
 }
@@ -186,6 +194,22 @@ void SolveSudoku::initialA(int &index)
 	}
 }
 
+void SolveSudoku::initialB(int *criterion, int& index)
+{
+	int i, j;
+	for (i = 0; i < 27; i++) {
+		criterion[i] = 511;
+	}
+	for (i = 0; i < 9; i++) {
+		for (j = 0; j < 9; j++) {
+			map[i][j] = data[index++];
+			if (map[i][j] != 0) {
+				removeA(criterion, i + 1, j + 1, map[i][j]);
+			}
+		}
+	}
+}
+
 void SolveSudoku::createNodeA(int row, int col, int value, int&useNum)
 {
 	int i, j, temp;
@@ -221,6 +245,27 @@ void SolveSudoku::createNodeA(int row, int col, int value, int&useNum)
 	return;
 }
 
+void SolveSudoku::update(int row, int clo, int value, bool * criterion)
+{
+	criterion[row * 9 + map[row][clo] - 1] = false;
+	criterion[81 + clo * 9 + map[row][clo] - 1] = false;
+	criterion[162 + (getblock(row + 1, clo + 1) - 1) * 9 + map[row][clo] - 1] = false;
+}
+
+void SolveSudoku::removeA(int * criterion, int row, int clo, int value)
+{
+	criterion[0 + row - 1] = criterion[row - 1] & (~encode[value - 1]);
+	criterion[9 + clo - 1] = criterion[9 + clo - 1] & (~encode[value - 1]);
+	criterion[18 + (getblock(row, clo) - 1)] = criterion[18 + (getblock(row, clo) - 1)] & (~encode[value - 1]);
+}
+
+void SolveSudoku::recoverA(int * criterion, int row, int clo, int value)
+{
+	criterion[0 + row - 1] = criterion[row - 1] | (encode[value - 1]);
+	criterion[9 + clo - 1] = criterion[9 + clo - 1] | (encode[value - 1]);
+	criterion[18 + (getblock(row, clo) - 1)] = criterion[18 + (getblock(row, clo) - 1)] | (encode[value - 1]);
+}
+
 bool SolveSudoku::dealingA()
 {
 	//std::cout << ++pile << '\n';
@@ -247,6 +292,55 @@ bool SolveSudoku::dealingA()
 		recover(i);
 	}
 	return state;
+}
+
+bool SolveSudoku::dealingB(int* criterion)
+{
+	int i, j, k;
+	bool state = false;
+	for (i = 0; i < 9; i++) {
+		for (j = 0; j < 9; j++) {
+			if (map[i][j] == 0) {
+				state = true;
+				break;
+			}
+		}
+		if (state) {
+			break;
+		}
+	}
+	if (!state) {
+		return true;
+	}
+	int value;
+	state = false;
+	for (k = 0; k < 9; k++) {
+		value = k + 1;
+		if (!fill(i + 1, j + 1, value, criterion)) {
+			continue;
+		}
+		map[i][j] = value;
+		removeA(criterion, i + 1, j + 1, value);
+		state = dealingB(criterion);
+		if (state) {
+			break;
+		}
+		recoverA(criterion, i + 1, j + 1, value);
+		map[i][j] = 0;
+	}
+	return state;
+}
+
+bool SolveSudoku::fill(int row, int clo, int value, int* criterion)
+{
+	if ((criterion[row - 1] & encode[value - 1]) != 0) {
+		if ((criterion[9 + clo - 1] & encode[value - 1]) != 0) {
+			if ((criterion[18 + (getblock(row, clo) - 1)] & encode[value - 1]) != 0) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void SolveSudoku::remove(int p)
@@ -326,6 +420,11 @@ void SolveSudoku::rewrite(std::string path)
 	file << cache;
 	file.close();
 	return;
+}
+
+char * SolveSudoku::getData()
+{
+	return cache;
 }
 
 //void SolveSudoku::clear()

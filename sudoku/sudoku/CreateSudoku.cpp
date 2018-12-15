@@ -12,7 +12,6 @@ CreateSudoku::CreateSudoku()
 	target = 0;
 }
 
-
 CreateSudoku::~CreateSudoku()
 {
 	delete[] output;
@@ -20,12 +19,17 @@ CreateSudoku::~CreateSudoku()
 
 bool CreateSudoku::stratCreate(int goalNumber)
 {
-	output = new char[163000001];
 	this->goalNumber = goalNumber;
+	output = new char[163*goalNumber+100];
 	createSeed(1);
 	stringToFile();
 	//file.close();
 	return true;
+}
+
+char * CreateSudoku::getOuput()
+{
+	return output;
 }
 
 bool CreateSudoku::createSeed(int cursor)
@@ -153,3 +157,4 @@ void CreateSudoku::stringToFile()
 	//std::cout << output;
 	return ;
 }
+

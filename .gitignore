@@ -342,3 +342,7 @@ ASALocalRun/
 *.vcxproj
 *.sln
 sudoku.txt
+p.txt
+*.diagsession
+Sample-Test1/
+*.config

@@ -18,6 +18,7 @@ public:
 	SolveSudoku();
 	~SolveSudoku();
 	void startSolve(std::string);
+	char* getData();
 private:
 	char * cache;
 	int * data;
@@ -37,18 +38,28 @@ private:
 	void solveUnit(int&);
 	//void initial();
 	void initialA(int&);
+	void initialB(int*, int&);
 	//void createNode(int row, int clo, int value);
 	void createNodeA(int row, int col, int value, int&);
+	void update(int row, int clo, int value, bool* criterion);
+	void removeA(int* criterion, int row, int clo, int value);
+	void recoverA(int* criterion, int row, int clo, int value);
 	//bool dealing();
 	bool dealingA();
+	bool dealingB(int*);
+	bool fill(int row, int clo, int value, int* criterion);
 	//void remove(node* p);
 	void remove(int p);
+	
 	//void recover(node* p);
 	void recover(int p);
+	
 	//void clear();
 	void toCache(int , int&);
 	void rewrite(std::string);
 	//node * head;
+
+
 };
 
 

@@ -5,7 +5,7 @@ public:
 	CreateSudoku();
 	~CreateSudoku();
 	bool stratCreate(int goalNumber);
-	
+	char* getOuput();
 private:
 	const int keynumber = 4;
 	int goalNumber;
@@ -26,5 +26,6 @@ private:
 	void getResult();
 	void outputResult();
 	void stringToFile();
+	
 };
 
