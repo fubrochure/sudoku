@@ -5,42 +5,7 @@ const int encode[9] = { 1,2,4,8,16,32,64,128,256 };
 
 int getblock(int row, int col)
 {
-	if (row <= 3) {
-		if (col <= 3) {
-			return 1;
-		}
-		else if (col <= 6)
-		{
-			return 2;
-		}
-		else {
-			return 3;
-		}
-	}
-	else if (row <= 6) {
-		if (col <= 3) {
-			return 4;
-		}
-		else if (col <= 6)
-		{
-			return 5;
-		}
-		else {
-			return 6;
-		}
-	}
-	else {
-		if (col <= 3) {
-			return 7;
-		}
-		else if (col <= 6)
-		{
-			return 8;
-		}
-		else {
-			return 9;
-		}
-	}
+	return (row - 1) / 3 * 3 + (col + 2) / 3;
 }
 
 SolveSudoku::SolveSudoku()
@@ -85,7 +50,7 @@ void SolveSudoku::startSolve(std::string adress)
 	for (nowNumber = 0; nowNumber < goalNumber; nowNumber++) {
 		solveUnit(index);
 		toCache(nowNumber, result);
-		std::cout << "finish one\n";
+		//std::cout << "finish one\n";
 	}
 	cache[result++] = '\0';
 	rewrite(path);
@@ -99,17 +64,18 @@ int SolveSudoku::dealFile(std::string path)
 	std::ifstream file;
 	file.open(path,std::ios::in);
 	file.seekg(0, std::ios::end);
-	len = file.tellg();
-	cache = new char[len+1];
+	len = int(file.tellg());
+	int temp = (int)len + 1;
+	cache = new char[temp];
 	file.seekg(0, std::ios::beg);
 	file.read(cache, len);
-	for (i = 0; i < len + 1; i++) {
+	for (i = 0; i < temp; i++) {
 		if (cache[i] >= '0'&&cache[i] <= '9') {
 			number++;
 		}
 	}
 	data = new int[number];
-	for (i = 0, j = 0; i < len + 1; i++) {
+	for (i = 0, j = 0; i < temp; i++) {
 		if (cache[i] >= '0'&&cache[i] <= '9') {
 			data[j++] = cache[i] - '0';
 		}
@@ -121,16 +87,13 @@ int SolveSudoku::dealFile(std::string path)
 void SolveSudoku::solveUnit(int& index)
 {
 	//int i, j;
-	bool back;
-	bool critetion[243];
 	int criterion[27];
-	int rest;
 	//initial();
-	initialA(index);
-	//initialB(criterion, index);
+	//initialA(index);
+	initialB(criterion, index);
 	//back = dealing();
-	back = dealingA();
-	//dealingB(criterion);
+	//dealingA();
+	dealingB(criterion, 0, 0);
 	//clear();
 	return;
 }
@@ -294,12 +257,12 @@ bool SolveSudoku::dealingA()
 	return state;
 }
 
-bool SolveSudoku::dealingB(int* criterion)
+bool SolveSudoku::dealingB(int* criterion, int i, int j)
 {
-	int i, j, k;
+	int k;
 	bool state = false;
-	for (i = 0; i < 9; i++) {
-		for (j = 0; j < 9; j++) {
+	for (; i < 9; i++) {
+		for (; j < 9; j++) {
 			if (map[i][j] == 0) {
 				state = true;
 				break;
@@ -308,6 +271,7 @@ bool SolveSudoku::dealingB(int* criterion)
 		if (state) {
 			break;
 		}
+		j = 0;
 	}
 	if (!state) {
 		return true;
@@ -321,7 +285,7 @@ bool SolveSudoku::dealingB(int* criterion)
 		}
 		map[i][j] = value;
 		removeA(criterion, i + 1, j + 1, value);
-		state = dealingB(criterion);
+		state = dealingB(criterion, i, j);
 		if (state) {
 			break;
 		}
@@ -333,12 +297,9 @@ bool SolveSudoku::dealingB(int* criterion)
 
 bool SolveSudoku::fill(int row, int clo, int value, int* criterion)
 {
-	if ((criterion[row - 1] & encode[value - 1]) != 0) {
-		if ((criterion[9 + clo - 1] & encode[value - 1]) != 0) {
-			if ((criterion[18 + (getblock(row, clo) - 1)] & encode[value - 1]) != 0) {
-				return true;
-			}
-		}
+	int temp = criterion[row - 1] & criterion[9 + clo - 1] & criterion[18 + (getblock(row, clo) - 1)] & encode[value - 1];
+	if (temp != 0) {
+		return true;
 	}
 	return false;
 }

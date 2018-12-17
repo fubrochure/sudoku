@@ -20,7 +20,8 @@ CreateSudoku::~CreateSudoku()
 bool CreateSudoku::stratCreate(int goalNumber)
 {
 	this->goalNumber = goalNumber;
-	output = new char[163*goalNumber+100];
+	int temp = ((int)163 * goalNumber) + 100;
+	output = new char[temp];
 	createSeed(1);
 	stringToFile();
 	//file.close();
@@ -97,7 +98,8 @@ void CreateSudoku::changePartly(int * a, int start, int end)
 			changePartly(a, 15, 17);
 		}
 		else {
-			getResult();
+			//getResult();
+			outputResult();
 		}
 	}
 	else {
@@ -133,11 +135,11 @@ void CreateSudoku::outputResult()
 	for (i = 0; i < 9; i++) {
 		for (j = 0; j < 9; j++) {
 			if (j == 0) {
-				output[target++] = result[i][j]+'0';
+				output[target++] = sudoku[Index[i]][Index[j + 9]] +'0';
 			}
 			else {
 				output[target++] = ' ';
-				output[target++] = result[i][j]+'0';
+				output[target++] = sudoku[Index[i]][Index[j + 9]] +'0';
 			}
 		}
 		output[target++] = '\n';	
@@ -149,7 +151,7 @@ void CreateSudoku::outputResult()
 void CreateSudoku::stringToFile()
 {
 	output[target++] = '\0';
-	std::cout << strlen(output);
+	//std::cout << strlen(output);
 	std::ofstream file;
 	file.open("sudoku.txt", std::ios::out | std::ios::trunc);
 	file << output;

@@ -178,15 +178,13 @@ bool checkSolution(char * data, int num)
 
 bool fill(int row, int clo, int value, int* criterion)
 {
-	if ((criterion[row - 1] & encode[value - 1]) != 0) {
-		if ((criterion[9 + clo - 1] & encode[value - 1]) != 0) {
-			if ((criterion[18 + (getblock(row, clo) - 1)] & encode[value - 1]) != 0) {
-				criterion[0 + row - 1] = criterion[row - 1] & (~encode[value - 1]);
-				criterion[9 + clo - 1] = criterion[9 + clo - 1] & (~encode[value - 1]);
-				criterion[18 + (getblock(row, clo) - 1)] = criterion[18 + (getblock(row, clo) - 1)] & (~encode[value - 1]);
-				return true;
-			}
-		}
+	int flag = criterion[row - 1] & criterion[9 + clo - 1] & criterion[18 + (getblock(row, clo) - 1)] & encode[value - 1];
+	if (flag != 0) {
+		
+		criterion[0 + row - 1] = criterion[row - 1] & (~encode[value - 1]);
+		criterion[9 + clo - 1] = criterion[9 + clo - 1] & (~encode[value - 1]);
+		criterion[18 + (getblock(row, clo) - 1)] = criterion[18 + (getblock(row, clo) - 1)] & (~encode[value - 1]);
+		return true;
 	}
 	return false;
 }

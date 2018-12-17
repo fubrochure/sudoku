@@ -46,7 +46,7 @@ private:
 	void recoverA(int* criterion, int row, int clo, int value);
 	//bool dealing();
 	bool dealingA();
-	bool dealingB(int*);
+	bool dealingB(int*, int i, int j);
 	bool fill(int row, int clo, int value, int* criterion);
 	//void remove(node* p);
 	void remove(int p);
