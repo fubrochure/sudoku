@@ -114,17 +114,17 @@ void CreateSudoku::changePartly(int * a, int start, int end)
 	return;
 }
 
-void CreateSudoku::getResult()
-{
-	int i, j;
-	for (i = 0; i < 9; i++) {
-		for (j = 0; j < 9; j++) {
-			result[i][j] = sudoku[Index[i]][Index[j+9]];
-		}
-	}
-	outputResult();
-	return;
-}
+//void CreateSudoku::getResult()
+//{
+//	int i, j;
+//	for (i = 0; i < 9; i++) {
+//		for (j = 0; j < 9; j++) {
+//			result[i][j] = sudoku[Index[i]][Index[j+9]];
+//		}
+//	}
+//	outputResult();
+//	return;
+//}
 
 void CreateSudoku::outputResult()
 {
@@ -153,7 +153,7 @@ void CreateSudoku::stringToFile()
 	output[target++] = '\0';
 	//std::cout << strlen(output);
 	std::ofstream file;
-	file.open("sudoku.txt", std::ios::out | std::ios::trunc);
+	file.open(".\\sudoku.txt", std::ios::out | std::ios::trunc);
 	file << output;
 	file.close();
 	//std::cout << output;

@@ -29,6 +29,18 @@ TEST(Check, CheckRightCreate)
 	EXPECT_EQ(1, check.check());
 }
 
+TEST(Check, WrongNumOfParameter)
+{
+	char** parameters = new char*[3];
+	parameters[0] = new char[1];
+	parameters[1] = new char[100];
+	parameters[2] = new char[100];
+	strcpy(parameters[1], "-c\0");
+	strcpy(parameters[2], "10000\0");
+	CheckParameter check(2, parameters);
+	EXPECT_EQ(-1, check.check());
+}
+
 TEST(Check, CheckWrongCreate)
 {
 	char** parameters = new char*[3];
@@ -37,6 +49,18 @@ TEST(Check, CheckWrongCreate)
 	parameters[2] = new char[100];
 	strcpy(parameters[1], "-c\0");
 	strcpy(parameters[2], "1ad00\0");
+	CheckParameter check(3, parameters);
+	EXPECT_EQ(-1, check.check());
+}
+
+TEST(Check, TooManyCreateCases)
+{
+	char** parameters = new char*[3];
+	parameters[0] = new char[1];
+	parameters[1] = new char[100];
+	parameters[2] = new char[100];
+	strcpy(parameters[1], "-c\0");
+	strcpy(parameters[2], "10000000\0");
 	CheckParameter check(3, parameters);
 	EXPECT_EQ(-1, check.check());
 }
@@ -65,6 +89,24 @@ TEST(Check, CheckWrongSolve)
 	EXPECT_EQ(-1, check.check());
 }
 
+TEST(Create, MinCase)
+{
+	int num = 1;
+	CreateSudoku create;
+	create.stratCreate(num);
+	char* result = create.getOuput();
+	EXPECT_TRUE(true);
+}
+
+TEST(Create, MaxCase)
+{
+	int num = 1000000;
+	CreateSudoku create;
+	create.stratCreate(num);
+	char* result = create.getOuput();
+	EXPECT_TRUE(true);
+}
+
 TEST(Create, SameResult)
 {
 	int num = 10000;
@@ -81,6 +123,15 @@ TEST(Solve, RightSolution)
 	soluve.startSolve(adress);
 	char* data = soluve.getData();
 	EXPECT_TRUE(checkSolution(data, 20));
+}
+
+TEST(Solve, PlentyOfCases) 
+{
+	SolveSudoku soluve;
+	std::string adress = "G:\\github\\sudoku\\sudoku\\x64\\Debug\\1000000.txt\0";
+	soluve.startSolve(adress);
+	char* data = soluve.getData();
+	EXPECT_TRUE(checkSolution(data, 1000000));
 }
 
 int main(int argc, char** argv)

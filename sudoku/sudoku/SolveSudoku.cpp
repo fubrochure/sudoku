@@ -12,30 +12,30 @@ SolveSudoku::SolveSudoku()
 {
 	cache = NULL;
 	data = NULL;
-	left = new int[nodeNum];
+	/*left = new int[nodeNum];
 	right = new int[nodeNum];
 	up = new int[nodeNum];
 	down = new int[nodeNum];
 	colValue = new int[nodeNum];
 	rowValue = new int[nodeNum];
 	fillValue = new int[nodeNum];
-	targetCol = new int[nodeNum];
-	number = new int[colNum + 1];
+	targetCol = new int[nodeNum];*/
+	//number = new int[colNum + 1];
 }
 
 SolveSudoku::~SolveSudoku()
 {
 	delete[] cache;
 	delete[] data;
-	delete[] left;
-	delete[] right;
-	delete[] up;
-	delete[] down;
-	delete[] colValue;
-	delete[] rowValue;
-	delete[] fillValue;
-	delete[] targetCol;
-	delete[] number;
+	//delete[] left;
+	//delete[] right;
+	//delete[] up;
+	//delete[] down;
+	//delete[] colValue;
+	//delete[] rowValue;
+	//delete[] fillValue;
+	//delete[] targetCol;
+	//delete[] number;
 }
 
 void SolveSudoku::startSolve(std::string adress)
@@ -98,64 +98,64 @@ void SolveSudoku::solveUnit(int& index)
 	return;
 }
 
-void SolveSudoku::initialA(int &index)
-{
-	int i, j;
-	int useNum=0;
-	bool col[9][9];
-	bool row[9][9];
-	bool block[9][9];
-	for (i = 0; i < 9; i++) {              //判定标准初始化
-		for (j = 0; j < 9; j++) {
-			col[i][j] = true;
-			row[i][j] = true;
-			block[i][j] = true;
-		}
-	}
-	for (i = 0; i < 9; i++) {               //数独map初始化，对空格取值加入限制
-		for (j = 0; j < 9; j++) {
-			map[i][j] = data[index++];
-			//std::cout << ' ' << map[i][j];
-			if (map[i][j] > 0) {
-				row[i][map[i][j] - 1] = false;
-				col[j][map[i][j] - 1] = false;
-				block[getblock(i + 1, j + 1) - 1][map[i][j] - 1] = false;
-			}
-		}
-		//std::cout << '\n';
-	}
-	useNum = 0;           //头指针
-	left[0] = 0;
-	right[0] = 0;
-	up[0] = 0;
-	down[0] = 0;
-	useNum++;
-	for (i = 1; i <= colNum; i++) {  //辅助元素
-		left[i] = i - 1;
-		right[i] = i + 1;
-		down[i] = i;
-		up[i] = i;
-		number[i] = 0;
-	}
-	right[0] = 1;
-	left[0] = colNum;
-	right[colNum] = 0;
-	useNum += colNum;
-	for (i = 0; i < 9; i++) {
-		for (j = 0; j < 9; j++) {
-			if (map[i][j] != 0) {
-				createNodeA(i + 1, j + 1, map[i][j], useNum);
-			}
-			else{
-				for (int k = 1; k <= 9; k++) {
-					if (row[i][k-1] && col[j][k-1] && block[getblock(i + 1, j + 1) - 1][k-1]) {
-						createNodeA(i + 1, j + 1, k, useNum);
-					}
-				}
-			}
-		}
-	}
-}
+//void SolveSudoku::initialA(int &index)
+//{
+//	int i, j;
+//	int useNum=0;
+//	bool col[9][9];
+//	bool row[9][9];
+//	bool block[9][9];
+//	for (i = 0; i < 9; i++) {              //判定标准初始化
+//		for (j = 0; j < 9; j++) {
+//			col[i][j] = true;
+//			row[i][j] = true;
+//			block[i][j] = true;
+//		}
+//	}
+//	for (i = 0; i < 9; i++) {               //数独map初始化，对空格取值加入限制
+//		for (j = 0; j < 9; j++) {
+//			map[i][j] = data[index++];
+//			//std::cout << ' ' << map[i][j];
+//			if (map[i][j] > 0) {
+//				row[i][map[i][j] - 1] = false;
+//				col[j][map[i][j] - 1] = false;
+//				block[getblock(i + 1, j + 1) - 1][map[i][j] - 1] = false;
+//			}
+//		}
+//		//std::cout << '\n';
+//	}
+//	useNum = 0;           //头指针
+//	left[0] = 0;
+//	right[0] = 0;
+//	up[0] = 0;
+//	down[0] = 0;
+//	useNum++;
+//	for (i = 1; i <= colNum; i++) {  //辅助元素
+//		left[i] = i - 1;
+//		right[i] = i + 1;
+//		down[i] = i;
+//		up[i] = i;
+//		number[i] = 0;
+//	}
+//	right[0] = 1;
+//	left[0] = colNum;
+//	right[colNum] = 0;
+//	useNum += colNum;
+//	for (i = 0; i < 9; i++) {
+//		for (j = 0; j < 9; j++) {
+//			if (map[i][j] != 0) {
+//				createNodeA(i + 1, j + 1, map[i][j], useNum);
+//			}
+//			else{
+//				for (int k = 1; k <= 9; k++) {
+//					if (row[i][k-1] && col[j][k-1] && block[getblock(i + 1, j + 1) - 1][k-1]) {
+//						createNodeA(i + 1, j + 1, k, useNum);
+//					}
+//				}
+//			}
+//		}
+//	}
+//}
 
 void SolveSudoku::initialB(int *criterion, int& index)
 {
@@ -173,40 +173,40 @@ void SolveSudoku::initialB(int *criterion, int& index)
 	}
 }
 
-void SolveSudoku::createNodeA(int row, int col, int value, int&useNum)
-{
-	int i, j, temp;
-	for (i = 0; i < 4; i++) {
-		temp = useNum + i;
-		left[temp] = useNum + (i - 1 + 4) % 4;
-		right[temp] = useNum + (i + 1) % 4;
-		if (i == 0) {
-			j = 1 + (row - 1) * 9 + (col - 1);
-		}
-		else if (i == 1) {
-			j = 82 + (row - 1) * 9 + (value - 1);
-		}
-		else if (i == 2) {
-			j = 163 + (col - 1) * 9 + (value - 1);
-		}
-		else
-		{
-			j = 244 + (getblock(row, col) - 1) * 9 + (value - 1);
-		}
-		up[temp] = j;
-		down[temp] = down[j];
-		up[down[j]] = temp;
-		down[j] = temp;
-		colValue[temp] = col;
-		rowValue[temp] = row;
-		fillValue[temp] = value;
-		targetCol[temp] = j;
-		number[j]++;
-	}
-	useNum += 4;
-	//std::cout << row << ' ' << col << ' ' << value<<'\n';
-	return;
-}
+//void SolveSudoku::createNodeA(int row, int col, int value, int&useNum)
+//{
+//	int i, j, temp;
+//	for (i = 0; i < 4; i++) {
+//		temp = useNum + i;
+//		left[temp] = useNum + (i - 1 + 4) % 4;
+//		right[temp] = useNum + (i + 1) % 4;
+//		if (i == 0) {
+//			j = 1 + (row - 1) * 9 + (col - 1);
+//		}
+//		else if (i == 1) {
+//			j = 82 + (row - 1) * 9 + (value - 1);
+//		}
+//		else if (i == 2) {
+//			j = 163 + (col - 1) * 9 + (value - 1);
+//		}
+//		else
+//		{
+//			j = 244 + (getblock(row, col) - 1) * 9 + (value - 1);
+//		}
+//		up[temp] = j;
+//		down[temp] = down[j];
+//		up[down[j]] = temp;
+//		down[j] = temp;
+//		colValue[temp] = col;
+//		rowValue[temp] = row;
+//		fillValue[temp] = value;
+//		targetCol[temp] = j;
+//		number[j]++;
+//	}
+//	useNum += 4;
+//	//std::cout << row << ' ' << col << ' ' << value<<'\n';
+//	return;
+//}
 
 void SolveSudoku::update(int row, int clo, int value, bool * criterion)
 {
@@ -229,33 +229,33 @@ void SolveSudoku::recoverA(int * criterion, int row, int clo, int value)
 	criterion[18 + (getblock(row, clo) - 1)] = criterion[18 + (getblock(row, clo) - 1)] | (encode[value - 1]);
 }
 
-bool SolveSudoku::dealingA()
-{
-	//std::cout << ++pile << '\n';
-	int i, minValue, minPos;
-	bool state = false;
-	if (right[0] == 0) {
-		return true;
-	}
-	minValue = number[right[0]];
-	minPos = right[0];
-	for (i = right[0]; i != 0; i = right[i]) {
-		if (number[i] < minValue) {
-			minValue = number[i];
-			minPos = i;
-		}
-	}
-	//std::cout << "finish\n";
-	for (i = down[minPos]; i != minPos; i = down[i]) {
-		remove(i);
-		map[rowValue[i] - 1][colValue[i] - 1] = fillValue[i];
-		//std::cout << rowValue[i] << ' ' << colValue[i] << ' ' << fillValue[i] << '\n';
-		state = dealingA();
-		if (state) break;
-		recover(i);
-	}
-	return state;
-}
+//bool SolveSudoku::dealingA()
+//{
+//	//std::cout << ++pile << '\n';
+//	int i, minValue, minPos;
+//	bool state = false;
+//	if (right[0] == 0) {
+//		return true;
+//	}
+//	minValue = number[right[0]];
+//	minPos = right[0];
+//	for (i = right[0]; i != 0; i = right[i]) {
+//		if (number[i] < minValue) {
+//			minValue = number[i];
+//			minPos = i;
+//		}
+//	}
+//	//std::cout << "finish\n";
+//	for (i = down[minPos]; i != minPos; i = down[i]) {
+//		remove(i);
+//		map[rowValue[i] - 1][colValue[i] - 1] = fillValue[i];
+//		//std::cout << rowValue[i] << ' ' << colValue[i] << ' ' << fillValue[i] << '\n';
+//		state = dealingA();
+//		if (state) break;
+//		recover(i);
+//	}
+//	return state;
+//}
 
 bool SolveSudoku::dealingB(int* criterion, int i, int j)
 {
@@ -304,57 +304,57 @@ bool SolveSudoku::fill(int row, int clo, int value, int* criterion)
 	return false;
 }
 
-void SolveSudoku::remove(int p)
-{
-	int row, col, temp;
-	col = p;
-	do {
-		left[right[targetCol[col]]] = left[targetCol[col]];
-		right[left[targetCol[col]]] = right[targetCol[col]];
-		row = down[col];
-		while (row != col)
-		{
-			if (row != targetCol[col]) {
-				temp = right[row];
-				while (temp != row) {
-					down[up[temp]] = down[temp];
-					up[down[temp]] = up[temp];
-					number[targetCol[temp]]--;
-					temp = right[temp];
-				}
-			}
-			row = down[row];
-		}
-		col = right[col];
-	} while (col != p);
-	return;
-}
-
-void SolveSudoku::recover(int p)
-{
-	int row, col, temp;
-	col = p;
-	do {
-		left[right[targetCol[col]]] = targetCol[col];
-		right[left[targetCol[col]]] = targetCol[col];
-		row = down[col];
-		while (row != col)
-		{
-			if (row != targetCol[col]) {
-				temp = right[row];
-				while (temp != row) {
-					down[up[temp]] = temp;
-					up[down[temp]] = temp;
-					number[targetCol[temp]]++;
-					temp = right[temp];
-				}
-			}
-			row = down[row];
-		}
-		col = right[col];
-	} while (col != p);
-	return;
-}
+//void SolveSudoku::remove(int p)
+//{
+//	int row, col, temp;
+//	col = p;
+//	do {
+//		left[right[targetCol[col]]] = left[targetCol[col]];
+//		right[left[targetCol[col]]] = right[targetCol[col]];
+//		row = down[col];
+//		while (row != col)
+//		{
+//			if (row != targetCol[col]) {
+//				temp = right[row];
+//				while (temp != row) {
+//					down[up[temp]] = down[temp];
+//					up[down[temp]] = up[temp];
+//					number[targetCol[temp]]--;
+//					temp = right[temp];
+//				}
+//			}
+//			row = down[row];
+//		}
+//		col = right[col];
+//	} while (col != p);
+//	return;
+//}
+//
+//void SolveSudoku::recover(int p)
+//{
+//	int row, col, temp;
+//	col = p;
+//	do {
+//		left[right[targetCol[col]]] = targetCol[col];
+//		right[left[targetCol[col]]] = targetCol[col];
+//		row = down[col];
+//		while (row != col)
+//		{
+//			if (row != targetCol[col]) {
+//				temp = right[row];
+//				while (temp != row) {
+//					down[up[temp]] = temp;
+//					up[down[temp]] = temp;
+//					number[targetCol[temp]]++;
+//					temp = right[temp];
+//				}
+//			}
+//			row = down[row];
+//		}
+//		col = right[col];
+//	} while (col != p);
+//	return;
+//}
 
 void SolveSudoku::toCache(int nowNumber, int &result)
 {
@@ -376,8 +376,9 @@ void SolveSudoku::toCache(int nowNumber, int &result)
 
 void SolveSudoku::rewrite(std::string path)
 {
+	
 	std::ofstream file;
-	file.open(path, std::ios::trunc | std::ios::out);
+	file.open(".\\sudoku.txt", std::ios::trunc | std::ios::out);
 	file << cache;
 	file.close();
 	return;

@@ -23,7 +23,7 @@ private:
 	void changeMap();
 	void swap(int *goalArray,int a, int b);
 	void changePartly(int* a, int start, int end);
-	void getResult();
+	//void getResult();
 	void outputResult();
 	void stringToFile();
 	
