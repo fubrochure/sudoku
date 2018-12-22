@@ -41,6 +41,18 @@ TEST(Check, WrongNumOfParameter)
 	EXPECT_EQ(-1, check.check());
 }
 
+TEST(Check, WrongParameter)
+{
+	char** parameters = new char*[3];
+	parameters[0] = new char[1];
+	parameters[1] = new char[100];
+	parameters[2] = new char[100];
+	strcpy(parameters[1], "fsdsf\0");
+	strcpy(parameters[2], "10000\0");
+	CheckParameter check(2, parameters);
+	EXPECT_EQ(-1, check.check());
+}
+
 TEST(Check, CheckWrongCreate)
 {
 	char** parameters = new char*[3];

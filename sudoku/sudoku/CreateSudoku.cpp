@@ -3,7 +3,7 @@
 
 
 
-CreateSudoku::CreateSudoku()
+CreateSudoku::CreateSudoku()      //初始化
 {
 	this->goalNumber = 0;
 	//this->output = "";
@@ -17,7 +17,7 @@ CreateSudoku::~CreateSudoku()
 	delete[] output;
 }
 
-bool CreateSudoku::stratCreate(int goalNumber)
+bool CreateSudoku::stratCreate(int goalNumber)    //外部调用函数
 {
 	this->goalNumber = goalNumber;
 	int temp = ((int)163 * goalNumber) + 100;
@@ -28,12 +28,12 @@ bool CreateSudoku::stratCreate(int goalNumber)
 	return true;
 }
 
-char * CreateSudoku::getOuput()
+char * CreateSudoku::getOuput()    //单元测试使用
 {
 	return output;
 }
 
-bool CreateSudoku::createSeed(int cursor)
+bool CreateSudoku::createSeed(int cursor)      //对seed进行全排列
 {
 	int i;
 	if (cursor == 8) {
@@ -51,7 +51,7 @@ bool CreateSudoku::createSeed(int cursor)
 	return true;
 }
 
-bool CreateSudoku::createMap()
+bool CreateSudoku::createMap()                 //seed生成后利用平移生成数独
 {
 	int i, j, k, l, m;
 	for (i = 0, k = 0; i < 3; i++) {
@@ -68,7 +68,7 @@ bool CreateSudoku::createMap()
 	return true;
 }
 
-void CreateSudoku::changeMap()
+void CreateSudoku::changeMap()               //对map的下标进行全排列，相当于进行行列变换
 {
 	changePartly(Index, 3, 5);
 	return;
@@ -76,7 +76,7 @@ void CreateSudoku::changeMap()
 
 
 
-void CreateSudoku::swap(int* goalArray,int a, int b)
+void CreateSudoku::swap(int* goalArray,int a, int b)     //全排列的交换函数
 {
 	int temp;
 	temp = goalArray[a];
@@ -84,7 +84,7 @@ void CreateSudoku::swap(int* goalArray,int a, int b)
 	goalArray[b] = temp;
 }
 
-void CreateSudoku::changePartly(int * a, int start, int end)
+void CreateSudoku::changePartly(int * a, int start, int end)   //坐标分位置进行全排列
 {
 	int i;
 	if (start == end) {
@@ -126,7 +126,7 @@ void CreateSudoku::changePartly(int * a, int start, int end)
 //	return;
 //}
 
-void CreateSudoku::outputResult()
+void CreateSudoku::outputResult()           //结果写入char*
 {
 	int i, j;
 	if (nowNumber > 0) {
@@ -148,7 +148,7 @@ void CreateSudoku::outputResult()
 	return;
 }
 
-void CreateSudoku::stringToFile()
+void CreateSudoku::stringToFile()//写入文件
 {
 	output[target++] = '\0';
 	//std::cout << strlen(output);

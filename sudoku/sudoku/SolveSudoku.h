@@ -41,7 +41,7 @@ private:
 	void initialB(int*, int&);
 	//void createNode(int row, int clo, int value);
 	//void createNodeA(int row, int col, int value, int&);
-	void update(int row, int clo, int value, bool* criterion);
+	//void update(int row, int clo, int value, bool* criterion);
 	void removeA(int* criterion, int row, int clo, int value);
 	void recoverA(int* criterion, int row, int clo, int value);
 	//bool dealing();

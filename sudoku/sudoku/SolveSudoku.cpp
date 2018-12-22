@@ -38,7 +38,7 @@ SolveSudoku::~SolveSudoku()
 	//delete[] number;
 }
 
-void SolveSudoku::startSolve(std::string adress)
+void SolveSudoku::startSolve(std::string adress)    //开始求解数独，作为public方法外部调用
 {
 	int i = 0;
 	int goalNumber, nowNumber, result,index;
@@ -56,7 +56,7 @@ void SolveSudoku::startSolve(std::string adress)
 	rewrite(path);
 }
 
-int SolveSudoku::dealFile(std::string path)
+int SolveSudoku::dealFile(std::string path)    //读取文件中的数独
 {
 	int i, j;
 	int len;
@@ -84,7 +84,7 @@ int SolveSudoku::dealFile(std::string path)
 	return number;
 }
 
-void SolveSudoku::solveUnit(int& index)
+void SolveSudoku::solveUnit(int& index)           //对数独开始进行求解
 {
 	//int i, j;
 	int criterion[27];
@@ -157,7 +157,7 @@ void SolveSudoku::solveUnit(int& index)
 //	}
 //}
 
-void SolveSudoku::initialB(int *criterion, int& index)
+void SolveSudoku::initialB(int *criterion, int& index)   //初始化数独求解的相关的数据结构
 {
 	int i, j;
 	for (i = 0; i < 27; i++) {
@@ -208,26 +208,26 @@ void SolveSudoku::initialB(int *criterion, int& index)
 //	return;
 //}
 
-void SolveSudoku::update(int row, int clo, int value, bool * criterion)
-{
-	criterion[row * 9 + map[row][clo] - 1] = false;
-	criterion[81 + clo * 9 + map[row][clo] - 1] = false;
-	criterion[162 + (getblock(row + 1, clo + 1) - 1) * 9 + map[row][clo] - 1] = false;
-}
+//void SolveSudoku::update(int row, int clo, int value, bool * criterion)
+//{
+//	criterion[row * 9 + map[row][clo] - 1] = false;
+//	criterion[81 + clo * 9 + map[row][clo] - 1] = false;
+//	criterion[162 + (getblock(row + 1, clo + 1) - 1) * 9 + map[row][clo] - 1] = false;
+//}
 
-void SolveSudoku::removeA(int * criterion, int row, int clo, int value)
+void SolveSudoku::removeA(int * criterion, int row, int clo, int value)           //填入数独后对限制条件进行更新
 {
 	criterion[0 + row - 1] = criterion[row - 1] & (~encode[value - 1]);
 	criterion[9 + clo - 1] = criterion[9 + clo - 1] & (~encode[value - 1]);
 	criterion[18 + (getblock(row, clo) - 1)] = criterion[18 + (getblock(row, clo) - 1)] & (~encode[value - 1]);
-}
+}  
 
-void SolveSudoku::recoverA(int * criterion, int row, int clo, int value)
+void SolveSudoku::recoverA(int * criterion, int row, int clo, int value)          //恢复限制条件
 {
 	criterion[0 + row - 1] = criterion[row - 1] | (encode[value - 1]);
 	criterion[9 + clo - 1] = criterion[9 + clo - 1] | (encode[value - 1]);
 	criterion[18 + (getblock(row, clo) - 1)] = criterion[18 + (getblock(row, clo) - 1)] | (encode[value - 1]);
-}
+}    
 
 //bool SolveSudoku::dealingA()
 //{
@@ -257,7 +257,7 @@ void SolveSudoku::recoverA(int * criterion, int row, int clo, int value)
 //	return state;
 //}
 
-bool SolveSudoku::dealingB(int* criterion, int i, int j)
+bool SolveSudoku::dealingB(int* criterion, int i, int j)       //数独求解的回溯函数
 {
 	int k;
 	bool state = false;
@@ -295,7 +295,7 @@ bool SolveSudoku::dealingB(int* criterion, int i, int j)
 	return state;
 }
 
-bool SolveSudoku::fill(int row, int clo, int value, int* criterion)
+bool SolveSudoku::fill(int row, int clo, int value, int* criterion)               //判断数独某个位置是否能够填写数字
 {
 	int temp = criterion[row - 1] & criterion[9 + clo - 1] & criterion[18 + (getblock(row, clo) - 1)] & encode[value - 1];
 	if (temp != 0) {
@@ -356,7 +356,7 @@ bool SolveSudoku::fill(int row, int clo, int value, int* criterion)
 //	return;
 //}
 
-void SolveSudoku::toCache(int nowNumber, int &result)
+void SolveSudoku::toCache(int nowNumber, int &result)     //将数独写入char*最后输出
 {
 	int i, j;
 	if (nowNumber != 0) {
@@ -374,7 +374,7 @@ void SolveSudoku::toCache(int nowNumber, int &result)
 	return;
 }
 
-void SolveSudoku::rewrite(std::string path)
+void SolveSudoku::rewrite(std::string path)   //输出
 {
 	
 	std::ofstream file;
@@ -384,7 +384,7 @@ void SolveSudoku::rewrite(std::string path)
 	return;
 }
 
-char * SolveSudoku::getData()
+char * SolveSudoku::getData()   //单元测试用
 {
 	return cache;
 }
