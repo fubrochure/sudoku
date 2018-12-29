@@ -1,14 +1,10 @@
 #include "stdafx.h"
 #include "CreateSudoku.h"
 
-
-
 CreateSudoku::CreateSudoku()      //³õÊ¼»¯
 {
 	this->goalNumber = 0;
-	//this->output = "";
 	nowNumber = 0;
-	//file.open(".//sudoku.txt", std::ios::out | std::ios::trunc);
 	target = 0;
 }
 
@@ -24,7 +20,6 @@ bool CreateSudoku::stratCreate(int goalNumber)    //Íâ²¿µ÷ÓÃº¯Êı
 	output = new char[temp];
 	createSeed(1);
 	stringToFile();
-	//file.close();
 	return true;
 }
 
@@ -74,8 +69,6 @@ void CreateSudoku::changeMap()               //¶ÔmapµÄÏÂ±ê½øĞĞÈ«ÅÅÁĞ£¬Ïàµ±ÓÚ½øĞĞ
 	return;
 }
 
-
-
 void CreateSudoku::swap(int* goalArray,int a, int b)     //È«ÅÅÁĞµÄ½»»»º¯Êı
 {
 	int temp;
@@ -98,7 +91,6 @@ void CreateSudoku::changePartly(int * a, int start, int end)   //×ø±ê·ÖÎ»ÖÃ½øĞĞÈ
 			changePartly(a, 15, 17);
 		}
 		else {
-			//getResult();
 			outputResult();
 		}
 	}
@@ -113,18 +105,6 @@ void CreateSudoku::changePartly(int * a, int start, int end)   //×ø±ê·ÖÎ»ÖÃ½øĞĞÈ
 	}
 	return;
 }
-
-//void CreateSudoku::getResult()
-//{
-//	int i, j;
-//	for (i = 0; i < 9; i++) {
-//		for (j = 0; j < 9; j++) {
-//			result[i][j] = sudoku[Index[i]][Index[j+9]];
-//		}
-//	}
-//	outputResult();
-//	return;
-//}
 
 void CreateSudoku::outputResult()           //½á¹ûĞ´Èëchar*
 {
@@ -151,12 +131,10 @@ void CreateSudoku::outputResult()           //½á¹ûĞ´Èëchar*
 void CreateSudoku::stringToFile()//Ğ´ÈëÎÄ¼ş
 {
 	output[target++] = '\0';
-	//std::cout << strlen(output);
 	std::ofstream file;
 	file.open(".\\sudoku.txt", std::ios::out | std::ios::trunc);
 	file << output;
 	file.close();
-	//std::cout << output;
 	return ;
 }
 

@@ -6,12 +6,6 @@
 #include"../sudoku/SolveSudoku.h"
 #include"../sudoku/SolveSudoku.cpp"
 
-//TEST(TestCaseName, TestName) {
-//  EXPECT_EQ(1, 1);
-//  EXPECT_TRUE(true);
-//}
-//const int encode[9] = { 1,2,4,8,16,32,64,128,256 };
-
 bool checkCreate(char* result, int num);
 bool compare(int** a, int** b);
 bool checkSolution(char *data, int num);
